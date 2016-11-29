@@ -1,4 +1,4 @@
-package pe.comercio.materialsearchview;
+package pe.comercio.materialsearchview.activity;
 
 
 import android.content.Intent;
@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
+
+import pe.comercio.materialsearchview.R;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{

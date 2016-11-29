@@ -5,10 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="pe.comercio.materialsearchview.FirstDemoActivity">
+    tools:context="pe.comercio.materialsearchview.activity.FirstDemoActivity">
 
-    <include layout="@layout/toolbar_search" />
-
+    <include layout="@layout/toolbar_purple" />
 
     <LinearLayout
         android:layout_width="match_parent"

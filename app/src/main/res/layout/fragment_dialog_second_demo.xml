@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="@color/trans_black_25">
 
-    <include layout="@layout/toolbar_search" />
+    <include layout="@layout/toolbar_purple" />
 
 </LinearLayout>
 

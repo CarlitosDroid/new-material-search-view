@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context="pe.comercio.materialsearchview.MainActivity">
+    tools:context="pe.comercio.materialsearchview.activity.MainActivity">
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btnFirstDemo"

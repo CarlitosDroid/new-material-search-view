@@ -1,4 +1,4 @@
-package pe.comercio.materialsearchview;
+package pe.comercio.materialsearchview.activity;
 
 import android.app.Dialog;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import pe.comercio.materialsearchview.R;
 
 public class SecondDemoActivity extends AppCompatActivity implements View.OnClickListener {
 
