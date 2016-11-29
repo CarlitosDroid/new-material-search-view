@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linGeneral"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/md_white_1000">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetEnd="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/md_white_1000"
+        app:layout_scrollFlags="enterAlways"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        tools:ignore="Overdraw">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/shape_editext_white">
+
+            <EditText
+                android:id="@+id/txtSearch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="buscar"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                style="@style/EditTextSearch"
+                android:maxLines="1" />
+
+            <ImageView
+                android:id="@+id/imgSearch"
+                android:layout_gravity="end"
+                android:layout_width="@dimen/size_search_edittext"
+                android:padding="@dimen/padding_image_search"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerInside"
+                android:layout_height="@dimen/size_search_edittext"
+                android:src="@drawable/ic_search_skyblue"/>
+
+        </FrameLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+
+</LinearLayout>
+
