@@ -1,6 +1,7 @@
 package pe.comercio.materialsearchview.activity;
 
 import android.app.Dialog;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
@@ -22,8 +23,11 @@ import java.util.List;
 import pe.comercio.materialsearchview.R;
 import pe.comercio.materialsearchview.model.UserEntity;
 import pe.comercio.materialsearchview.view.adapter.UserAdapter;
+import pe.comercio.materialsearchview.view.fragment.DeleteLastSearchDialgoFragment;
+import pe.comercio.materialsearchview.view.fragment.OnLastSearchDeletedListener;
 
-public class FirstDemoActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
+public class FirstDemoActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher,
+        OnLastSearchDeletedListener {
 
     private ImageView imgSearch;
     private TextView txtSearch;
@@ -34,12 +38,20 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
     private List<UserEntity> userEntityList = new ArrayList<>();
 
 
+
+    private ImageView dialogImageSearch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_demo);
         imgSearch = (ImageView) findViewById(R.id.imgSearch);
         imgSearch.setOnClickListener(this);
+
+        userEntityList.add(new UserEntity("carlos"));
+        userEntityList.add(new UserEntity("henry"));
+        userEntityList.add(new UserEntity("david"));
+        userEntityList.add(new UserEntity("henry"));
+        userEntityList.add(new UserEntity("bill"));
     }
 
     @Override
@@ -56,22 +68,9 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
         LinearLayout linGeneral = (LinearLayout) view.findViewById(R.id.linGeneral);
         recyclerView = (RecyclerView) view.findViewById(R.id.rcvContact);
         txtSearch = (TextView) view.findViewById(R.id.txtSearch);
+        dialogImageSearch = (ImageView) view.findViewById(R.id.imgSearch);
 
-        userEntityList.add(new UserEntity("carlos"));
-        userEntityList.add(new UserEntity("ricardo"));
-        userEntityList.add(new UserEntity("jose"));
-        userEntityList.add(new UserEntity("hernesto"));
-        userEntityList.add(new UserEntity("eduardo"));
-        userEntityList.add(new UserEntity("fabri"));
-        userEntityList.add(new UserEntity("monkey"));
-        userEntityList.add(new UserEntity("monkey"));
-        userEntityList.add(new UserEntity("rabbit"));
-        userEntityList.add(new UserEntity("lion"));
-        userEntityList.add(new UserEntity("been"));
-        userEntityList.add(new UserEntity("monkey"));
-        userEntityList.add(new UserEntity("monkey"));
-        userEntityList.add(new UserEntity("monkey"));
-        userEntityList.add(new UserEntity("monkey"));
+
 
 
         userAdapter = new UserAdapter(this, userEntityList);
@@ -91,6 +90,17 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
         txtSearch.addTextChangedListener(this);
+
+        dialogImageSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                userEntityList.add(new UserEntity("escondidoooo"));
+                userAdapter.notifyDataSetChanged();
+            }
+        });
+        
+        
     }
 
     @Override
@@ -106,5 +116,21 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void afterTextChanged(Editable editable) {
 
+    }
+
+    public void showDeleteLabelDialogFragment(int position){
+        FragmentManager fm = this.getSupportFragmentManager();
+        DeleteLastSearchDialgoFragment deleteTagDialogFragment =
+                DeleteLastSearchDialgoFragment.newInstance(position);
+        deleteTagDialogFragment.show(fm, "layout_filter_checkbox_dialog");
+    }
+
+
+    @Override
+    public void onLastSearchDeleted(String name, int itemPosition) {
+        Toast.makeText(this, name + " - " + itemPosition, Toast.LENGTH_SHORT).show();
+
+        userEntityList.remove(itemPosition);
+        userAdapter.notifyDataSetChanged();
     }
 }

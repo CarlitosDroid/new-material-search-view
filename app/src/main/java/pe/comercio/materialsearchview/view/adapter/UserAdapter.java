@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import pe.comercio.materialsearchview.R;
+import pe.comercio.materialsearchview.activity.FirstDemoActivity;
 import pe.comercio.materialsearchview.model.UserEntity;
 import pe.comercio.materialsearchview.view.UserFilter;
 
@@ -22,12 +24,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserVH> implem
     List<UserEntity> filteredUserList;
     private UserFilter userFilter;
 
-    Context mContext;
+    FirstDemoActivity firstDemoActivity;
 
-    public UserAdapter(Context context, List<UserEntity> originalUserList) {
+    public UserAdapter(FirstDemoActivity firstDemoActivity, List<UserEntity> originalUserList) {
         this.originalUserList = originalUserList;
         this.filteredUserList = originalUserList;
-        this.mContext = context;
+        this.firstDemoActivity = firstDemoActivity;
 
     }
 
@@ -55,11 +57,39 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserVH> implem
         return userFilter;
     }
 
-    class UserVH extends RecyclerView.ViewHolder {
+    class UserVH extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
         TextView lblName;
         UserVH(View itemView) {
             super(itemView);
             lblName = (AppCompatTextView) itemView.findViewById(R.id.lblName);
+
+            lblName.setOnClickListener(this);
+            lblName.setOnLongClickListener(this);
+        }
+
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.lblName:
+                    Toast.makeText(firstDemoActivity, "" +getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            switch (view.getId()){
+                case R.id.lblName:
+                    firstDemoActivity.showDeleteLabelDialogFragment(getAdapterPosition());
+
+
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 

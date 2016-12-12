@@ -16,13 +16,13 @@ import pe.comercio.materialsearchview.view.adapter.UserAdapter;
  */
 
 public class UserFilter extends Filter {
-    private List<UserEntity> userEntityList;
+    private List<UserEntity> originalUserEntityList;
     private List<UserEntity> filteredUserEntityList;
     private UserAdapter adapter;
 
-    public UserFilter(List<UserEntity> userEntityList, UserAdapter adapter) {
+    public UserFilter(List<UserEntity> originalUserEntityList, UserAdapter adapter) {
         super();
-        this.userEntityList = new LinkedList<>(userEntityList);
+        this.originalUserEntityList = new LinkedList<>(originalUserEntityList);
         this.adapter = adapter;
         this.filteredUserEntityList = new ArrayList<>();
     }
@@ -35,11 +35,11 @@ public class UserFilter extends Filter {
         final FilterResults results = new FilterResults();
 
         if (constraint.length() == 0) {
-            filteredUserEntityList.addAll(userEntityList);
+            filteredUserEntityList.addAll(originalUserEntityList);
         } else {
             final String filterPattern = constraint.toString().toLowerCase().trim();
 
-            for (final UserEntity userEntity : userEntityList) {
+            for (final UserEntity userEntity : originalUserEntityList) {
                 if (userEntity.getName().contains(filterPattern)) {
                     filteredUserEntityList.add(userEntity);
                 }
