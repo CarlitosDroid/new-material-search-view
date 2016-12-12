@@ -57,4 +57,22 @@ public class UserFilter extends Filter {
         adapter.getFilteredList().addAll((ArrayList<UserEntity>) results.values);
         adapter.notifyDataSetChanged();
     }
+
+    public List<UserEntity> getOriginalList(){
+        return originalUserEntityList;
+    }
+
+    public void addItemToOfOriginalList(UserEntity userEntity){
+        originalUserEntityList.add(0, userEntity);
+    }
+
+    public void addItemToOfOriginalList2(UserEntity userEntity){
+        originalUserEntityList.add(0, userEntity);
+        filteredUserEntityList.add(0, userEntity);
+
+        adapter.getFilteredList().clear();
+        adapter.getFilteredList().addAll(filteredUserEntityList);
+        adapter.notifyDataSetChanged();
+    }
+
 }

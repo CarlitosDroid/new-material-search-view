@@ -22,13 +22,12 @@
         app:cardBackgroundColor="@color/md_white_1000"
         app:cardElevation="2dp">
 
-        <EditText
-            android:id="@+id/txtSearch"
+        <TextView
+            android:id="@+id/lblSearchh"
             style="@style/EditTextSearch"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="buscar"
-            android:imeOptions="actionSearch"
+            android:text="buscar"
             android:maxLines="1"
             android:singleLine="true" />
 
