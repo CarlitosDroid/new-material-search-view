@@ -62,7 +62,6 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
         userEntityList.add(new UserEntity("carlos"));
         userEntityList.add(new UserEntity("henry"));
         userEntityList.add(new UserEntity("david"));
-        userEntityList.add(new UserEntity("henry"));
         userEntityList.add(new UserEntity("bill"));
 
         userAdapter = new UserAdapter(this, userEntityList);
@@ -98,7 +97,6 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onClick(View view) {
 
-                ((UserFilter) userAdapter.getFilter()).addItemToOfOriginalList2(new UserEntity("escondidoooo"));
 
             }
         });
@@ -157,8 +155,6 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onLastSearchDeleted(String name, int itemPosition) {
         Toast.makeText(this, name + " - " + itemPosition, Toast.LENGTH_SHORT).show();
-
-        userEntityList.remove(itemPosition);
-        userAdapter.notifyDataSetChanged();
+        ((UserFilter) userAdapter.getFilter()).removeItemFromOriginalAndFilteredLisy(itemPosition);
     }
 }
