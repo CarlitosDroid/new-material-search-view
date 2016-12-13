@@ -64,6 +64,11 @@ public class UserFilter extends Filter {
 
     public void addItemToOfOriginalList(UserEntity userEntity){
         originalUserEntityList.add(0, userEntity);
+        filteredUserEntityList.add(0, userEntity);
+
+        adapter.getFilteredList().clear();
+        adapter.getFilteredList().addAll(filteredUserEntityList);
+        adapter.notifyDataSetChanged();
     }
 
 

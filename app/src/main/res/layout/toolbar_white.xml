@@ -21,25 +21,50 @@
         app:cardBackgroundColor="@color/md_white_1000"
         app:cardElevation="2dp">
 
-        <EditText
-            android:id="@+id/txtSearch"
-            style="@style/EditTextSearch"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="buscar"
-            android:imeOptions="actionSearch"
-            android:maxLines="1"
-            android:singleLine="true" />
+            android:layout_height="45dp"
+            android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/imgSearch"
-            android:layout_width="@dimen/size_search_edittext"
-            android:layout_height="@dimen/size_search_edittext"
-            android:layout_gravity="end"
-            android:contentDescription="@string/app_name"
-            android:padding="@dimen/padding_image_search"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_search_skyblue" />
+            <ImageView
+                android:id="@+id/imgBack"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_arrow_back_grey_800_24dp"/>
+
+            <EditText
+                android:id="@+id/txtSearch"
+                style="@style/EditTextSearch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint="buscar"
+                android:imeOptions="actionSearch"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+            <ImageView
+                android:id="@+id/imgVoice"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:layout_gravity="end"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_keyboard_voice_grey_800_24dp" />
+
+            <ImageView
+                android:id="@+id/imgClose"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:layout_gravity="end"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_close_grey_800_24dp"
+                android:visibility="gone"/>
+
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 
