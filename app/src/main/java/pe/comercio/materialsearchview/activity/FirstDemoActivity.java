@@ -42,33 +42,30 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
         OnLastSearchDeletedListener {
 
     private TextView lblSearchh;
+    private ImageView imgSearch;
 
-
+    Dialog dialog;
+    View view;
     private ImageView imgVoice;
     private ImageView imgClose;
     private ImageView imgBack;
     private EditText txtSearch;
     private FloatingActionButton fabFilter;
-
     private RecyclerView recyclerView;
+
     private UserAdapter userAdapter;
     private LinearLayoutManager linearLayoutManager;
     private List<UserEntity> userEntityList = new ArrayList<>();
 
-    private ImageView imgSearch;
-
-    Dialog dialog;
-
     public static final int SPEECH_REQUEST_CODE = 4000;
 
     private Animation animation_scale_out;
-
-
     //animation floatingActionButton
     private static final float HIDE_THRESHOLD = 100;
     private static final float SHOW_THRESHOLD = 50;
     int scrollDist = 0;
     private boolean isVisible = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +77,7 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
         animation_scale_out = AnimationUtils.loadAnimation(this, R.anim.fab_scale_out);
 
 
-        View view = getLayoutInflater().inflate(R.layout.fragment_dialog_first_demo, null);
+        view = getLayoutInflater().inflate(R.layout.fragment_dialog_first_demo, null);
         LinearLayout linGeneral = (LinearLayout) view.findViewById(R.id.linGeneral);
         recyclerView = (RecyclerView) view.findViewById(R.id.rcvContact);
         txtSearch = (EditText) view.findViewById(R.id.txtSearch);
@@ -98,6 +95,11 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(userAdapter);
+
+        initDialog();
+    }
+
+    private void initDialog(){
 
         dialog = new Dialog(this, R.style.MaterialSearch);
         dialog.setContentView(view);

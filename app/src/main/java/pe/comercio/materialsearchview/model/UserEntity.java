@@ -8,9 +8,15 @@ package pe.comercio.materialsearchview.model;
 public class UserEntity {
 
     private String name;
+    private String time;
 
     public UserEntity(String name) {
         this.name = name;
+    }
+
+    public UserEntity(String name, String time) {
+        this.name = name;
+        this.time = time;
     }
 
     public String getName() {
@@ -19,5 +25,13 @@ public class UserEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

@@ -1,12 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linGeneral"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/trans_black_25">
+    android:background="@color/trans_black_25"
+    android:orientation="vertical">
 
-    <include layout="@layout/toolbar_purple" />
+    <include layout="@layout/toolbar_transparent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/md_white_1000"
+            app:cardElevation="2dp">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcvContact"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
 
 </LinearLayout>
 
