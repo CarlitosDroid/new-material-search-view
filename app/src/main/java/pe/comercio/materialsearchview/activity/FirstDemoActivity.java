@@ -3,6 +3,7 @@ package pe.comercio.materialsearchview.activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.speech.RecognizerIntent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,10 +12,13 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,6 +32,7 @@ import java.util.Locale;
 
 import pe.comercio.materialsearchview.R;
 import pe.comercio.materialsearchview.model.UserEntity;
+import pe.comercio.materialsearchview.util.Util;
 import pe.comercio.materialsearchview.view.UserFilter;
 import pe.comercio.materialsearchview.view.adapter.UserAdapter;
 import pe.comercio.materialsearchview.view.fragment.DeleteLastSearchDialgoFragment;
@@ -43,6 +48,7 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
     private ImageView imgClose;
     private ImageView imgBack;
     private EditText txtSearch;
+    private FloatingActionButton fabFilter;
 
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
@@ -55,6 +61,14 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
 
     public static final int SPEECH_REQUEST_CODE = 4000;
 
+    private Animation animation_scale_out;
+
+
+    //animation floatingActionButton
+    private static final float HIDE_THRESHOLD = 100;
+    private static final float SHOW_THRESHOLD = 50;
+    int scrollDist = 0;
+    private boolean isVisible = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +76,8 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
         imgSearch = (ImageView) findViewById(R.id.imgSearch);
         lblSearchh = (TextView) findViewById(R.id.lblSearchh);
 
+
+        animation_scale_out = AnimationUtils.loadAnimation(this, R.anim.fab_scale_out);
 
 
         View view = getLayoutInflater().inflate(R.layout.fragment_dialog_first_demo, null);
@@ -71,6 +87,7 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
         imgVoice = (ImageView) view.findViewById(R.id.imgVoice);
         imgClose = (ImageView) view.findViewById(R.id.imgClose);
         imgBack = (ImageView) view.findViewById(R.id.imgBack);
+        fabFilter = (FloatingActionButton) view.findViewById(R.id.fabFilter);
 
         userEntityList.add(new UserEntity("carlos"));
         userEntityList.add(new UserEntity("henry"));
@@ -95,6 +112,29 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
         imgVoice.setOnClickListener(this);
         imgBack.setOnClickListener(this);
         imgClose.setOnClickListener(this);
+        fabFilter.setOnClickListener(this);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                //animationFloatingACtionButton
+                if (isVisible && scrollDist > HIDE_THRESHOLD) {
+                    Util.animTranslationHide(FirstDemoActivity.this, fabFilter);
+                    scrollDist = 0;
+                    isVisible = false;
+                } else if (!isVisible && scrollDist < -SHOW_THRESHOLD) {
+                    Util.animTranslationShow(FirstDemoActivity.this, fabFilter);
+                    scrollDist = 0;
+                    isVisible = true;
+                }
+
+                if ((isVisible && dy > 0) || (!isVisible && dy < 0)) {
+                    scrollDist += dy;
+                }
+            }
+        });
     }
 
     @Override
@@ -155,6 +195,11 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
         return true;
     }
 
+    private void showAnimationFabFilter() {
+        fabFilter.setVisibility(View.VISIBLE);
+        fabFilter.startAnimation(animation_scale_out);
+    }
+
 
 //    public void showDialogSearchView2() {
 //
@@ -198,6 +243,8 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
             imgVoice.setVisibility(View.GONE);
             imgClose.setVisibility(View.VISIBLE);
         }
+
+        Log.e("TAMAÑO ","TAM AÑO  " + userEntityList.size());
         userAdapter.getFilter().filter(charSequence.toString());
     }
 
