@@ -83,8 +83,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserVH> implem
         public boolean onLongClick(View view) {
             switch (view.getId()){
                 case R.id.lblName:
-                    firstDemoActivity.showDeleteLabelDialogFragment(getAdapterPosition());
-
+                    firstDemoActivity.showDeleteLabelDialogFragment(filteredUserList.get(getAdapterPosition()).getName(), getAdapterPosition());
 
                     return true;
                 default:

@@ -83,13 +83,6 @@ public class SecondDemoActivity extends AppCompatActivity implements View.OnClic
 
     private void initDialog(){
 
-//        userEntityList.add(new UserEntity("Carlos1", "2016-12-14 09:35:40"));
-//        userEntityList.add(new UserEntity("Carlos2", "2016-12-14 09:35:41"));
-//        userEntityList.add(new UserEntity("Carlos3", "2016-12-14 09:35:42"));
-//        userEntityList.add(new UserEntity("Carlos4", "2016-12-14 09:35:44"));
-//        userEntityList.add(new UserEntity("Carlos5", "2017-12-14 09:35:43"));
-
-
         userEntityList.addAll(lastSearchDB.getOrderedListLastSearch());
 
 //        Collections.sort(userEntityList);
@@ -145,8 +138,8 @@ public class SecondDemoActivity extends AppCompatActivity implements View.OnClic
                     String textSelected = txtSearch.getText().toString();
 
                     if(!textSelected.isEmpty()){
-                        lastSearchDB.addLastSearch(textSelected, Util.getFormatDate());
                         if(shouldAddLastSearch(textSelected)){
+                            lastSearchDB.addLastSearch(textSelected, Util.getFormatDate());
                             Toast.makeText(SecondDemoActivity.this, "ENTER", Toast.LENGTH_SHORT).show();
                             userEntityList.clear();
                             userEntityList.addAll(lastSearchDB.getOrderedListLastSearch());
@@ -198,17 +191,19 @@ public class SecondDemoActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    @Override
-    public void onLastSearchDeleted(String name, int itemPosition) {
-        Toast.makeText(this, name + " - " + itemPosition, Toast.LENGTH_SHORT).show();
-        ((UserFilter) userAdapter.getFilter()).removeItemFromOriginalAndFilteredLisy(itemPosition);
-    }
-
-    public void showDeleteLabelDialogFragment(int position) {
+    public void showDeleteLabelDialogFragment(String name, int position) {
         FragmentManager fm = this.getSupportFragmentManager();
         DeleteLastSearchDialgoFragment deleteTagDialogFragment =
-                DeleteLastSearchDialgoFragment.newInstance(position);
+                DeleteLastSearchDialgoFragment.newInstance(name, position);
         deleteTagDialogFragment.show(fm, "layout_filter_checkbox_dialog");
+
+    }
+
+    @Override
+    public void onLastSearchDeleted(String name, int itemPosition) {
+        lastSearchDB.deleteLastSearchByName(name);
+        ((SecondFilter) userAdapter.getFilter()).removeItemFromOriginalAndFilteredLisy(itemPosition);
+        Toast.makeText(this, "size " + lastSearchDB.getOrderedListLastSearch().size(), Toast.LENGTH_SHORT).show();
     }
 
     private void onVoiceClicked() {

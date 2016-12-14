@@ -26,16 +26,18 @@ public class DeleteLastSearchDialgoFragment extends DialogFragment implements Vi
     private OnLastSearchDeletedListener onLastSearchDeletedListener;
 
     private int labelPosition = 0;
+    private String labelName = "";
 
     public DeleteLastSearchDialgoFragment(){
     }
 
     @SuppressWarnings("SameParameterValue")
-    public static DeleteLastSearchDialgoFragment newInstance(int labelPosition){
+    public static DeleteLastSearchDialgoFragment newInstance(String labelName, int labelPosition){
         DeleteLastSearchDialgoFragment frag = new DeleteLastSearchDialgoFragment();
         Bundle args = new Bundle();
 
         args.putInt("labelPosition", labelPosition);
+        args.putString("labelName", labelName);
         frag.setArguments(args);
         return frag;
     }
@@ -45,6 +47,7 @@ public class DeleteLastSearchDialgoFragment extends DialogFragment implements Vi
         super.onCreate(savedInstanceState);
 
         labelPosition = getArguments().getInt("labelPosition");
+        labelName = getArguments().getString("labelName");
     }
 
     @Nullable
@@ -69,8 +72,7 @@ public class DeleteLastSearchDialgoFragment extends DialogFragment implements Vi
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnAccept:
-                onLastSearchDeletedListener.onLastSearchDeleted("hola",labelPosition);
-
+                onLastSearchDeletedListener.onLastSearchDeleted(labelName,labelPosition);
                 getDialog().dismiss();
                 break;
             case R.id.btnCancel:

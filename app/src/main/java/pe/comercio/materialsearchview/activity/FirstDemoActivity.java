@@ -32,6 +32,7 @@ import java.util.Locale;
 
 import pe.comercio.materialsearchview.R;
 import pe.comercio.materialsearchview.model.UserEntity;
+import pe.comercio.materialsearchview.storage.database.LastSearchDB;
 import pe.comercio.materialsearchview.util.Util;
 import pe.comercio.materialsearchview.view.UserFilter;
 import pe.comercio.materialsearchview.view.adapter.UserAdapter;
@@ -66,6 +67,8 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
     int scrollDist = 0;
     private boolean isVisible = true;
 
+    private LastSearchDB lastSearchDB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,21 +86,19 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
         imgBack = (ImageView) view.findViewById(R.id.imgBack);
         fabFilter = (FloatingActionButton) view.findViewById(R.id.fabFilter);
 
-        userEntityList.add(new UserEntity("carlos", Util.getFormatDate()));
-        userEntityList.add(new UserEntity("henry", Util.getFormatDate()));
-        userEntityList.add(new UserEntity("david", Util.getFormatDate()));
-        userEntityList.add(new UserEntity("bill", Util.getFormatDate()));
-
-        userAdapter = new UserAdapter(this, userEntityList);
-        linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(userAdapter);
-
+        lastSearchDB = new LastSearchDB(this);
         initDialog();
 
     }
 
     private void initDialog(){
+
+        userEntityList.addAll(lastSearchDB.getOrderedListLastSearch());
+
+        userAdapter = new UserAdapter(this, userEntityList);
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(userAdapter);
 
         dialog = new Dialog(this, R.style.MaterialSearch);
         dialog.setContentView(view);
@@ -172,10 +173,11 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
                     String textSelected = txtSearch.getText().toString();
 
                     if(!textSelected.isEmpty()){
-                        //lastSearchDB.addLastSearch(textSelected, "1");
                         if(shouldAddLastSearch(textSelected)){
+                            lastSearchDB.addLastSearch(textSelected, Util.getFormatDate());
                             Toast.makeText(FirstDemoActivity.this, "ENTER", Toast.LENGTH_SHORT).show();
-                            userEntityList.add(new UserEntity(textSelected, Util.getFormatDate()));
+                            userEntityList.clear();
+                            userEntityList.addAll(lastSearchDB.getOrderedListLastSearch());
                             ((UserFilter) userAdapter.getFilter()).addItemToOfOriginalList(new UserEntity(textSelected, Util.getFormatDate()));
                         }
                     }
@@ -256,18 +258,19 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    public void showDeleteLabelDialogFragment(int position) {
+    public void showDeleteLabelDialogFragment(String name, int position) {
         FragmentManager fm = this.getSupportFragmentManager();
         DeleteLastSearchDialgoFragment deleteTagDialogFragment =
-                DeleteLastSearchDialgoFragment.newInstance(position);
+                DeleteLastSearchDialgoFragment.newInstance(name, position);
         deleteTagDialogFragment.show(fm, "layout_filter_checkbox_dialog");
-    }
 
+    }
 
     @Override
     public void onLastSearchDeleted(String name, int itemPosition) {
-        Toast.makeText(this, name + " - " + itemPosition, Toast.LENGTH_SHORT).show();
+        lastSearchDB.deleteLastSearchByName(name);
         ((UserFilter) userAdapter.getFilter()).removeItemFromOriginalAndFilteredLisy(itemPosition);
+        Toast.makeText(this, "size " + lastSearchDB.getOrderedListLastSearch().size(), Toast.LENGTH_SHORT).show();
     }
 
     private void onVoiceClicked() {
