@@ -3,7 +3,6 @@ package pe.comercio.materialsearchview.activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.speech.RecognizerIntent;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,15 +24,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 import pe.comercio.materialsearchview.R;
 import pe.comercio.materialsearchview.model.UserEntity;
+import pe.comercio.materialsearchview.storage.database.LastSearchDB;
 import pe.comercio.materialsearchview.util.Util;
+import pe.comercio.materialsearchview.view.SecondFilter;
 import pe.comercio.materialsearchview.view.UserFilter;
 import pe.comercio.materialsearchview.view.adapter.SecondAdapter;
-import pe.comercio.materialsearchview.view.adapter.UserAdapter;
 import pe.comercio.materialsearchview.view.fragment.DeleteLastSearchDialgoFragment;
 import pe.comercio.materialsearchview.view.fragment.OnLastSearchDeletedListener;
 
@@ -55,6 +56,9 @@ public class SecondDemoActivity extends AppCompatActivity implements View.OnClic
     private LinearLayoutManager linearLayoutManager;
     private List<UserEntity> userEntityList = new ArrayList<>();
 
+    private LastSearchDB lastSearchDB;
+
+
     public static final int SPEECH_REQUEST_CODE = 4000;
 
     @Override
@@ -64,7 +68,6 @@ public class SecondDemoActivity extends AppCompatActivity implements View.OnClic
         imgSearch = (ImageView) findViewById(R.id.imgSearch);
         imgSearch.setOnClickListener(this);
 
-
         view = getLayoutInflater().inflate(R.layout.fragment_dialog_second_demo, null);
         linGeneral = (LinearLayout) view.findViewById(R.id.linGeneral);
         recyclerView = (RecyclerView) view.findViewById(R.id.rcvContact);
@@ -73,21 +76,29 @@ public class SecondDemoActivity extends AppCompatActivity implements View.OnClic
         imgClose = (ImageView) view.findViewById(R.id.imgClose);
         imgBack = (ImageView) view.findViewById(R.id.imgBack);
 
-        userEntityList.add(new UserEntity("carlos"));
-        userEntityList.add(new UserEntity("henry"));
-        userEntityList.add(new UserEntity("david"));
-        userEntityList.add(new UserEntity("bill"));
+        lastSearchDB = new LastSearchDB(this);
+
+        initDialog();
+    }
+
+    private void initDialog(){
+
+//        userEntityList.add(new UserEntity("Carlos1", "2016-12-14 09:35:40"));
+//        userEntityList.add(new UserEntity("Carlos2", "2016-12-14 09:35:41"));
+//        userEntityList.add(new UserEntity("Carlos3", "2016-12-14 09:35:42"));
+//        userEntityList.add(new UserEntity("Carlos4", "2016-12-14 09:35:44"));
+//        userEntityList.add(new UserEntity("Carlos5", "2017-12-14 09:35:43"));
+
+
+        userEntityList.addAll(lastSearchDB.getOrderedListLastSearch());
+
+//        Collections.sort(userEntityList);
+//        Collections.reverse(userEntityList);
 
         userAdapter = new SecondAdapter(this, userEntityList);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(userAdapter);
-
-        initDialog();
-
-    }
-
-    private void initDialog(){
 
         dialog = new Dialog(this, R.style.MyDialog);
         dialog.setContentView(view);
@@ -97,14 +108,12 @@ public class SecondDemoActivity extends AppCompatActivity implements View.OnClic
         dialog.getWindow().setGravity(Gravity.BOTTOM);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
-
         linGeneral.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(dialog.isShowing()){
                     dialog.hide();
                 }
-
             }
         });
 
@@ -136,11 +145,12 @@ public class SecondDemoActivity extends AppCompatActivity implements View.OnClic
                     String textSelected = txtSearch.getText().toString();
 
                     if(!textSelected.isEmpty()){
-                        //lastSearchDB.addLastSearch(textSelected, "1");
+                        lastSearchDB.addLastSearch(textSelected, Util.getFormatDate());
                         if(shouldAddLastSearch(textSelected)){
                             Toast.makeText(SecondDemoActivity.this, "ENTER", Toast.LENGTH_SHORT).show();
-                            userEntityList.add(new UserEntity(textSelected));
-                            ((UserFilter) userAdapter.getFilter()).addItemToOfOriginalList(new UserEntity(textSelected));
+                            userEntityList.clear();
+                            userEntityList.addAll(lastSearchDB.getOrderedListLastSearch());
+                            ((SecondFilter) userAdapter.getFilter()).addItemToOfOriginalList(new UserEntity(textSelected, Util.getFormatDate()));
                         }
                     }
                     dialog.dismiss();
@@ -226,8 +236,8 @@ public class SecondDemoActivity extends AppCompatActivity implements View.OnClic
 
 
                     if(shouldAddLastSearch(searchWrd)){
-                        userEntityList.add(new UserEntity(searchWrd));
-                        ((UserFilter) userAdapter.getFilter()).addItemToOfOriginalList(new UserEntity(searchWrd));
+                        userEntityList.add(new UserEntity(searchWrd, Util.getFormatDate()));
+                        ((UserFilter) userAdapter.getFilter()).addItemToOfOriginalList(new UserEntity(searchWrd, Util.getFormatDate()));
                     }
 
                     txtSearch.setText(searchWrd);

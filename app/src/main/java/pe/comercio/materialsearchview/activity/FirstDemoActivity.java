@@ -72,10 +72,7 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_first_demo);
         imgSearch = (ImageView) findViewById(R.id.imgSearch);
         lblSearchh = (TextView) findViewById(R.id.lblSearchh);
-
-
         animation_scale_out = AnimationUtils.loadAnimation(this, R.anim.fab_scale_out);
-
 
         view = getLayoutInflater().inflate(R.layout.fragment_dialog_first_demo, null);
         LinearLayout linGeneral = (LinearLayout) view.findViewById(R.id.linGeneral);
@@ -86,10 +83,10 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
         imgBack = (ImageView) view.findViewById(R.id.imgBack);
         fabFilter = (FloatingActionButton) view.findViewById(R.id.fabFilter);
 
-        userEntityList.add(new UserEntity("carlos"));
-        userEntityList.add(new UserEntity("henry"));
-        userEntityList.add(new UserEntity("david"));
-        userEntityList.add(new UserEntity("bill"));
+        userEntityList.add(new UserEntity("carlos", Util.getFormatDate()));
+        userEntityList.add(new UserEntity("henry", Util.getFormatDate()));
+        userEntityList.add(new UserEntity("david", Util.getFormatDate()));
+        userEntityList.add(new UserEntity("bill", Util.getFormatDate()));
 
         userAdapter = new UserAdapter(this, userEntityList);
         linearLayoutManager = new LinearLayoutManager(this);
@@ -97,6 +94,7 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
         recyclerView.setAdapter(userAdapter);
 
         initDialog();
+
     }
 
     private void initDialog(){
@@ -143,6 +141,9 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgSearch:
+                Log.e("VEAMOS ","VEASMO " + Util.getFormatDate());
+//                Collections.sort();
+
                 showDialogSearchView();
                 break;
             case R.id.imgBack:
@@ -174,8 +175,8 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
                         //lastSearchDB.addLastSearch(textSelected, "1");
                         if(shouldAddLastSearch(textSelected)){
                             Toast.makeText(FirstDemoActivity.this, "ENTER", Toast.LENGTH_SHORT).show();
-                            userEntityList.add(new UserEntity(textSelected));
-                            ((UserFilter) userAdapter.getFilter()).addItemToOfOriginalList(new UserEntity(textSelected));
+                            userEntityList.add(new UserEntity(textSelected, Util.getFormatDate()));
+                            ((UserFilter) userAdapter.getFilter()).addItemToOfOriginalList(new UserEntity(textSelected, Util.getFormatDate()));
                         }
                     }
                     dialog.dismiss();
@@ -294,8 +295,8 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
 
 
                     if(shouldAddLastSearch(searchWrd)){
-                        userEntityList.add(new UserEntity(searchWrd));
-                        ((UserFilter) userAdapter.getFilter()).addItemToOfOriginalList(new UserEntity(searchWrd));
+                        userEntityList.add(new UserEntity(searchWrd, Util.getFormatDate()));
+                        ((UserFilter) userAdapter.getFilter()).addItemToOfOriginalList(new UserEntity(searchWrd, Util.getFormatDate()));
                     }
 
                     txtSearch.setText(searchWrd);
