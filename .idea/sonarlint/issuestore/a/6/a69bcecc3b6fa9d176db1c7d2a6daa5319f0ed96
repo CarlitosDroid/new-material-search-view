@@ -1,21 +1,19 @@
 
+nsquid:CommentedOutCodeLine}"<This block of commented-out lines of code should be removed.(¦Ô‘ıüÿÿÿÿ8ø¸•Ó+
+{squid:S1188†"\Reduce this anonymous class number of lines from 22 to at most 20, or make it a named class.(†¥‡ÿ8æ’œÓ+
+]squid:S1155è">Use isEmpty() to check whether the collection is empty or not.(ìŠœ8Ş‚ÂÓ+
+Ssquid:S1066ì"/Merge this if statement with the enclosing one.(ÆÿÒ­ıÿÿÿÿ8Ş‚ÂÓ+
+‡squid:S1157¡"cReplace these toUpperCase()/toLowerCase() and equals() calls with a single equalsIgnoreCase() call.(¹ªøÿÿÿÿ8óÆ›Ó+
+ squid:S1186©"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(á¬‡İ8›ŠšÓ+
+P"squid:SwitchLastCaseIsDefaultCheckz""Add a default case to this switch.(ºÖ
+€squid:S14508"bRemove the "linearLayoutManager" field and declare it as a local variable in the relevant methods.(„ñš8úûùÒ+
+bsquid:S1301z"KReplace this "switch" statement by "if" statements to increase readability.(ºÖ
 q
-squid:S134Ş"NRefactor this code to not nest more than 3 if/for/while/switch/try statements.(ûëù«øÿÿÿÿ8Ş‚ÂÓ+
-~squid:S14502"[Remove the "recyclerView" field and declare it as a local variable in the relevant methods.(¿á© ıÿÿÿÿ8ô’Ó+
-{squid:S1188…"\Reduce this anonymous class number of lines from 21 to at most 20, or make it a named class.(†¥‡ÿ8æ’œÓ+
-€squid:S14505"bRemove the "linearLayoutManager" field and declare it as a local variable in the relevant methods.(„ñš8úûùÒ+
-esquid:MaximumInheritanceDepth&"<This class has 7 parents which is greater than 5 authorized.(‚×ÌÑ
-Ssquid:S1066ß"/Merge this if statement with the enclosing one.(ÆÿÒ­ıÿÿÿÿ8Ş‚ÂÓ+
-esquid:S1192K"GDefine a constant instead of duplicating this literal "carlos" 5 times.(ö‡à8‰Œ×ğ+
-osquid:CommentedOutCodeLineŒ"<This block of commented-out lines of code should be removed.(Óü“ úÿÿÿÿ8æ’œÓ+
-P"squid:SwitchLastCaseIsDefaultChecky""Add a default case to this switch.(ºÖ
-‡squid:S1157Ÿ"cReplace these toUpperCase()/toLowerCase() and equals() calls with a single equalsIgnoreCase() call.(¹ªøÿÿÿÿ8óÆ›Ó+
- squid:S1186§"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(á¬‡İ8›ŠšÓ+
-]squid:S1155Û">Use isEmpty() to check whether the collection is empty or not.(ìŠœ8Ş‚ÂÓ+
+squid:S134ë"NRefactor this code to not nest more than 3 if/for/while/switch/try statements.(ûëù«øÿÿÿÿ8Ş‚ÂÓ+
+`squid:UnusedPrivateMethodÚ"3Remove this unused private "onVoiceClicked" method.(ñ•ÃÉ8ã…ÀÓ+
+esquid:MaximumInheritanceDepth)"<This class has 7 parents which is greater than 5 authorized.(‚×ÌÑ
+Ssquid:S1066"/Merge this if statement with the enclosing one.(¤Ÿ¤‰ûÿÿÿÿ8†ï¸ò+
+nsquid:CommentedOutCodeLineX"<This block of commented-out lines of code should be removed.(”Ãç«ûÿÿÿÿ8Íİ±ñ+
+¥squid:S1186¾"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(×åó«øÿÿÿÿ8›ŠšÓ+
 q
-squid:S134å"NRefactor this code to not nest more than 3 if/for/while/switch/try statements.(¡æĞÁÿÿÿÿÿ8Ş‚ÂÓ+
-bsquid:S1301y"KReplace this "switch" statement by "if" statements to increase readability.(ºÖ
-¥squid:S1186¼"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(×åó«øÿÿÿÿ8›ŠšÓ+
-`squid:UnusedPrivateMethodÍ"3Remove this unused private "onVoiceClicked" method.(ñ•ÃÉ8ã…ÀÓ+
-Ssquid:S1066"/Merge this if statement with the enclosing one.(¤Ÿ¤‰ûÿÿÿÿ8æ’œÓ+
-nsquid:CommentedOutCodeLine|"<This block of commented-out lines of code should be removed.(¦Ô‘ıüÿÿÿÿ8ø¸•Ó+
+squid:S134ò"NRefactor this code to not nest more than 3 if/for/while/switch/try statements.(¡æĞÁÿÿÿÿÿ8Ş‚ÂÓ+

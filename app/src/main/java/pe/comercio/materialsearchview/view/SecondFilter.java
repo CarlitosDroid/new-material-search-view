@@ -4,6 +4,7 @@ import android.util.Log;
 import android.widget.Filter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -90,9 +91,51 @@ public class SecondFilter extends Filter {
     }
 
 
+    public void updateItemFromOriginalAndFilteredLisy(String itemName, String stringDateUpdated, int position){
+
+        for (int i = 0; i < originalUserEntityList.size(); i++) {
+            if(originalUserEntityList.get(i).getName().equals(itemName)){
+                originalUserEntityList.get(i).setDateTime(stringDateUpdated);
+            }
+        }
+
+        filteredUserEntityList.get(position).setDateTime(stringDateUpdated);
 
 
+        Collections.sort(originalUserEntityList);
+        Collections.reverse(originalUserEntityList);
 
+//        Collections.sort(filteredUserEntityList);
+//        Collections.reverse(filteredUserEntityList);
+        //Collections.reverse(filteredUserEntityList);
 
+        adapter.getFilteredList().clear();
+        adapter.getFilteredList().addAll(filteredUserEntityList);
+        adapter.notifyDataSetChanged();
+
+    }
+//    public void updateItemFromOriginalAndFilteredLisy(String itemName, String stringDateUpdated, int position){
+//
+//        for (int i = 0; i < originalUserEntityList.size(); i++) {
+//            if(originalUserEntityList.get(i).getName().equals(filteredUserEntityList.get(position).getName())){
+//                originalUserEntityList.get(i).setDateTime(stringDateUpdated);
+//            }
+//        }
+//
+//        filteredUserEntityList.get(position).setDateTime(stringDateUpdated);
+//
+//
+//        Collections.sort(originalUserEntityList);
+//        Collections.reverse(originalUserEntityList);
+//
+////        Collections.sort(filteredUserEntityList);
+////        Collections.reverse(filteredUserEntityList);
+//        //Collections.reverse(filteredUserEntityList);
+//
+//        adapter.getFilteredList().clear();
+//        adapter.getFilteredList().addAll(filteredUserEntityList);
+//        adapter.notifyDataSetChanged();
+//
+//    }
 
 }

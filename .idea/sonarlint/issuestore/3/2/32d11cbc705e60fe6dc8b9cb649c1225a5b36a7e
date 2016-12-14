@@ -1,0 +1,4 @@
+
+tsquid:S1450"XRemove the "btnAccept" field and declare it as a local variable in the relevant methods.(±üïØıÿÿÿÿ
+tsquid:S1450"XRemove the "btnCancel" field and declare it as a local variable in the relevant methods.(·ñöøşÿÿÿÿ
+¤squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ÓºİØúÿÿÿÿ8ªÂ”ò+

@@ -13,7 +13,6 @@ import pe.comercio.materialsearchview.util.ConstantDB;
 
 /**
  * Created by Ricardo Bravo on 3/08/16.
- *
  */
 
 public class LastSearchDB extends DatabaseHandler {
@@ -23,10 +22,10 @@ public class LastSearchDB extends DatabaseHandler {
         getInstance(context);
     }
 
-    public void addLastSearch(String lastSearchName, String numberTouch){
-        String sql = "INSERT INTO "+ ConstantDB.TABLE_LAST_SEARCH +"("
-                +ConstantDB.KEY_NAME+", "
-                +ConstantDB.KEY_DATETIME+") VALUES (?,?)";
+    public void addLastSearch(String lastSearchName, String numberTouch) {
+        String sql = "INSERT INTO " + ConstantDB.TABLE_LAST_SEARCH + "("
+                + ConstantDB.KEY_NAME + ", "
+                + ConstantDB.KEY_DATETIME + ") VALUES (?,?)";
         SQLiteDatabase db = this.getWritableDatabase();
         SQLiteStatement statement = db.compileStatement(sql);
         db.beginTransaction();
@@ -38,19 +37,19 @@ public class LastSearchDB extends DatabaseHandler {
         db.endTransaction();
     }
 
-    public List<UserEntity> getOrderedListLastSearch(){
+    public List<UserEntity> getOrderedListLastSearch() {
 
         List<UserEntity> lastSearchList = new ArrayList<>();
 
-        String selectQuery = "SELECT "+ConstantDB.KEY_NAME+", "
-                +ConstantDB.KEY_DATETIME
-                +" FROM " + ConstantDB.TABLE_LAST_SEARCH
+        String selectQuery = "SELECT " + ConstantDB.KEY_NAME + ", "
+                + ConstantDB.KEY_DATETIME
+                + " FROM " + ConstantDB.TABLE_LAST_SEARCH
                 + " ORDER BY " + ConstantDB.KEY_DATETIME + " DESC ";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        try{
+        try {
             if (cursor.moveToFirst()) {
                 do {
                     UserEntity lastSearchEntity = new UserEntity();
@@ -59,33 +58,40 @@ public class LastSearchDB extends DatabaseHandler {
                     lastSearchList.add(lastSearchEntity);
                 } while (cursor.moveToNext());
             }
-        }finally {
+        } finally {
             cursor.close();
         }
 
         return lastSearchList;
     }
 
-    public UserEntity getLastSearchByName(String name){
+    public void updateLastSearchByName(String name, String dateTime) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE " + ConstantDB.TABLE_LAST_SEARCH + " SET "
+                + ConstantDB.KEY_DATETIME + " = '" + dateTime +"' WHERE "
+                + ConstantDB.KEY_NAME + " = '" + name + "'");
+    }
+
+    public UserEntity getLastSearchByName(String name) {
 
         UserEntity lastSearchEntity = new UserEntity();
 
-        String selectQuery = "SELECT "+ConstantDB.KEY_NAME+", "
-                +ConstantDB.KEY_DATETIME
-                +" FROM " + ConstantDB.TABLE_LAST_SEARCH
-                + " WHERE " + ConstantDB.KEY_NAME + " = '"+ name+"'";
+        String selectQuery = "SELECT " + ConstantDB.KEY_NAME + ", "
+                + ConstantDB.KEY_DATETIME
+                + " FROM " + ConstantDB.TABLE_LAST_SEARCH
+                + " WHERE " + ConstantDB.KEY_NAME + " = '" + name + "'";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        try{
+        try {
             if (cursor.moveToFirst()) {
                 do {
                     lastSearchEntity.setName(cursor.getString(0));
                     lastSearchEntity.setName(cursor.getString(1));
                 } while (cursor.moveToNext());
             }
-        }finally {
+        } finally {
             cursor.close();
         }
         return lastSearchEntity;
@@ -93,14 +99,14 @@ public class LastSearchDB extends DatabaseHandler {
 
     public void deleteLastSearchByName(String lastSearchName) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM " + ConstantDB.TABLE_LAST_SEARCH+ " WHERE "+ConstantDB.KEY_NAME+"='"+lastSearchName+"'");
+        db.execSQL("DELETE FROM " + ConstantDB.TABLE_LAST_SEARCH + " WHERE " + ConstantDB.KEY_NAME + "='" + lastSearchName + "'");
         db.close();
 
     }
 
-    public void deleteLastSearch(){
+    public void deleteLastSearch() {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM "+ConstantDB.TABLE_LAST_SEARCH;
+        String query = "DELETE FROM " + ConstantDB.TABLE_LAST_SEARCH;
         db.execSQL(query);
     }
 }

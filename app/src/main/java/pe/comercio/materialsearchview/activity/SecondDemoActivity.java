@@ -124,6 +124,18 @@ public class SecondDemoActivity extends AppCompatActivity implements View.OnClic
                 showDialogSearchView();
                 //loadToolBarSearch();
                 break;
+            case R.id.imgBack:
+                dialog.dismiss();
+                break;
+
+            case R.id.imgClose:
+                txtSearch.setText("");
+                imgVoice.setVisibility(View.VISIBLE);
+                imgClose.setVisibility(View.GONE);
+                break;
+            case R.id.imgVoice:
+                onVoiceClicked();
+                break;
         }
     }
 
@@ -189,6 +201,15 @@ public class SecondDemoActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void afterTextChanged(Editable editable) {
 
+    }
+
+    public void positioningItemClicked(String name, int position) {
+
+        dialog.dismiss();
+        String stringDateUpdated = Util.getFormatDate();
+        lastSearchDB.updateLastSearchByName(name, stringDateUpdated);
+
+        ((SecondFilter) userAdapter.getFilter()).updateItemFromOriginalAndFilteredLisy(name, stringDateUpdated, position);
     }
 
     public void showDeleteLabelDialogFragment(String name, int position) {

@@ -72,7 +72,7 @@ public class SecondAdapter extends RecyclerView.Adapter<SecondAdapter.UserVH> im
         public void onClick(View view) {
             switch (view.getId()){
                 case R.id.lblName:
-                    Toast.makeText(firstDemoActivity, "" +getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                    firstDemoActivity.positioningItemClicked(filteredUserList.get(getAdapterPosition()).getName(), getAdapterPosition());
                     break;
                 default:
                     break;
