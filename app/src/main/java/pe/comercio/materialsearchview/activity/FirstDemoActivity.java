@@ -1,16 +1,25 @@
 package pe.comercio.materialsearchview.activity;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.speech.RecognizerIntent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,9 +28,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import pe.comercio.materialsearchview.R;
 import pe.comercio.materialsearchview.model.UserEntity;
+import pe.comercio.materialsearchview.storage.database.LastSearchDB;
+import pe.comercio.materialsearchview.util.Util;
 import pe.comercio.materialsearchview.view.UserFilter;
 import pe.comercio.materialsearchview.view.adapter.UserAdapter;
 import pe.comercio.materialsearchview.view.fragment.DeleteLastSearchDialgoFragment;
@@ -31,18 +43,31 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
         OnLastSearchDeletedListener {
 
     private TextView lblSearchh;
-
     private ImageView imgSearch;
-    private EditText txtSearch;
 
+    Dialog dialog;
+    View view;
+    private ImageView imgVoice;
+    private ImageView imgClose;
+    private ImageView imgBack;
+    private EditText txtSearch;
+    private FloatingActionButton fabFilter;
     private RecyclerView recyclerView;
+
     private UserAdapter userAdapter;
     private LinearLayoutManager linearLayoutManager;
     private List<UserEntity> userEntityList = new ArrayList<>();
 
-    private ImageView dialogImageSearch;
+    public static final int SPEECH_REQUEST_CODE = 4000;
 
-    Dialog dialog;
+    private Animation animation_scale_out;
+    //animation floatingActionButton
+    private static final float HIDE_THRESHOLD = 100;
+    private static final float SHOW_THRESHOLD = 50;
+    int scrollDist = 0;
+    private boolean isVisible = true;
+
+    private LastSearchDB lastSearchDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,20 +75,25 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_first_demo);
         imgSearch = (ImageView) findViewById(R.id.imgSearch);
         lblSearchh = (TextView) findViewById(R.id.lblSearchh);
-        imgSearch.setOnClickListener(this);
+        animation_scale_out = AnimationUtils.loadAnimation(this, R.anim.fab_scale_out);
 
-        View view = getLayoutInflater().inflate(R.layout.fragment_dialog_first_demo, null);
+        view = getLayoutInflater().inflate(R.layout.fragment_dialog_first_demo, null);
         LinearLayout linGeneral = (LinearLayout) view.findViewById(R.id.linGeneral);
         recyclerView = (RecyclerView) view.findViewById(R.id.rcvContact);
         txtSearch = (EditText) view.findViewById(R.id.txtSearch);
+        imgVoice = (ImageView) view.findViewById(R.id.imgVoice);
+        imgClose = (ImageView) view.findViewById(R.id.imgClose);
+        imgBack = (ImageView) view.findViewById(R.id.imgBack);
+        fabFilter = (FloatingActionButton) view.findViewById(R.id.fabFilter);
 
-        dialogImageSearch = (ImageView) view.findViewById(R.id.imgSearch);
+        lastSearchDB = new LastSearchDB(this);
+        initDialog();
 
-        userEntityList.add(new UserEntity("carlos"));
-        userEntityList.add(new UserEntity("henry"));
-        userEntityList.add(new UserEntity("david"));
-        userEntityList.add(new UserEntity("henry"));
-        userEntityList.add(new UserEntity("bill"));
+    }
+
+    private void initDialog(){
+
+        userEntityList.addAll(lastSearchDB.getOrderedListLastSearch());
 
         userAdapter = new UserAdapter(this, userEntityList);
         linearLayoutManager = new LinearLayoutManager(this);
@@ -79,13 +109,55 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
         txtSearch.addTextChangedListener(this);
+        imgSearch.setOnClickListener(this);
+        imgVoice.setOnClickListener(this);
+        imgBack.setOnClickListener(this);
+        imgClose.setOnClickListener(this);
+        fabFilter.setOnClickListener(this);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                //animationFloatingACtionButton
+                if (isVisible && scrollDist > HIDE_THRESHOLD) {
+                    Util.animTranslationHide(FirstDemoActivity.this, fabFilter);
+                    scrollDist = 0;
+                    isVisible = false;
+                } else if (!isVisible && scrollDist < -SHOW_THRESHOLD) {
+                    Util.animTranslationShow(FirstDemoActivity.this, fabFilter);
+                    scrollDist = 0;
+                    isVisible = true;
+                }
+
+                if ((isVisible && dy > 0) || (!isVisible && dy < 0)) {
+                    scrollDist += dy;
+                }
+            }
+        });
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgSearch:
+                Log.e("VEAMOS ","VEASMO " + Util.getFormatDate());
+//                Collections.sort();
+
                 showDialogSearchView();
+                break;
+            case R.id.imgBack:
+                dialog.dismiss();
+                break;
+
+            case R.id.imgClose:
+                txtSearch.setText("");
+                imgVoice.setVisibility(View.VISIBLE);
+                imgClose.setVisibility(View.GONE);
+                break;
+            case R.id.imgVoice:
+                onVoiceClicked();
                 break;
         }
     }
@@ -94,15 +166,45 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
         dialog.show();
         txtSearch.setText("");
 
-        dialogImageSearch.setOnClickListener(new View.OnClickListener() {
+        txtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View view) {
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                    String textSelected = txtSearch.getText().toString();
 
-                ((UserFilter) userAdapter.getFilter()).addItemToOfOriginalList2(new UserEntity("escondidoooo"));
+                    if(!textSelected.isEmpty()){
+                        if(shouldAddLastSearch(textSelected)){
+                            lastSearchDB.addLastSearch(textSelected, Util.getFormatDate());
+                            Toast.makeText(FirstDemoActivity.this, "ENTER", Toast.LENGTH_SHORT).show();
+                            userEntityList.clear();
+                            userEntityList.addAll(lastSearchDB.getOrderedListLastSearch());
+                            ((UserFilter) userAdapter.getFilter()).addItemToOfOriginalList(new UserEntity(textSelected, Util.getFormatDate()));
+                        }
+                    }
+                    dialog.dismiss();
 
+                    return true;
+                }
+                return false;
             }
         });
+
     }
+
+    public boolean shouldAddLastSearch(String textSelected){
+        for (int i = 0; i < userEntityList.size(); i++) {
+            if(userEntityList.get(i).getName().trim().toLowerCase().equals(textSelected.trim().toLowerCase())){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void showAnimationFabFilter() {
+        fabFilter.setVisibility(View.VISIBLE);
+        fabFilter.startAnimation(animation_scale_out);
+    }
+
 
 //    public void showDialogSearchView2() {
 //
@@ -137,8 +239,18 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        userAdapter.getFilter().filter(charSequence.toString());
+        if(txtSearch.getText().toString().trim().isEmpty()){
 
+            imgVoice.setVisibility(View.VISIBLE);
+            imgClose.setVisibility(View.GONE);
+
+        }else{
+            imgVoice.setVisibility(View.GONE);
+            imgClose.setVisibility(View.VISIBLE);
+        }
+
+        Log.e("TAMAÑO ","TAM AÑO  " + userEntityList.size());
+        userAdapter.getFilter().filter(charSequence.toString());
     }
 
     @Override
@@ -146,19 +258,53 @@ public class FirstDemoActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    public void showDeleteLabelDialogFragment(int position) {
+    public void showDeleteLabelDialogFragment(String name, int position) {
         FragmentManager fm = this.getSupportFragmentManager();
         DeleteLastSearchDialgoFragment deleteTagDialogFragment =
-                DeleteLastSearchDialgoFragment.newInstance(position);
+                DeleteLastSearchDialgoFragment.newInstance(name, position);
         deleteTagDialogFragment.show(fm, "layout_filter_checkbox_dialog");
-    }
 
+    }
 
     @Override
     public void onLastSearchDeleted(String name, int itemPosition) {
-        Toast.makeText(this, name + " - " + itemPosition, Toast.LENGTH_SHORT).show();
+        lastSearchDB.deleteLastSearchByName(name);
+        ((UserFilter) userAdapter.getFilter()).removeItemFromOriginalAndFilteredLisy(itemPosition);
+        Toast.makeText(this, "size " + lastSearchDB.getOrderedListLastSearch().size(), Toast.LENGTH_SHORT).show();
+    }
 
-        userEntityList.remove(itemPosition);
-        userAdapter.notifyDataSetChanged();
+    private void onVoiceClicked() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "SPEAK NOW!");
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
+        startActivityForResult(intent, SPEECH_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK) {
+            List<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (results != null && results.size() > 0) {
+                String searchWrd = results.get(0);
+                if (!TextUtils.isEmpty(searchWrd)) {
+                    if (dialog != null) {
+                        if(dialog.isShowing()){
+                            dialog.dismiss();
+                        }
+                    }
+
+
+                    if(shouldAddLastSearch(searchWrd)){
+                        userEntityList.add(new UserEntity(searchWrd, Util.getFormatDate()));
+                        ((UserFilter) userAdapter.getFilter()).addItemToOfOriginalList(new UserEntity(searchWrd, Util.getFormatDate()));
+                    }
+
+                    txtSearch.setText(searchWrd);
+                }
+            }
+        }
     }
 }

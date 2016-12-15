@@ -1,0 +1,31 @@
+
+csquid:CommentedOutCodeLineÑ"<This block of commented-out lines of code should be removed.(Ú×˜¯
+Q"squid:SwitchLastCaseIsDefaultCheck""Add a default case to this switch.(ºÖ
+asquid:UnusedPrivateMethodË";Remove this unused private "showAnimationFabFilter" method.(‹Øç
+hsquid:CommentedOutCodeLineÛ"<This block of commented-out lines of code should be removed.(«¢‹ÿÿÿÿÿ
+‚squid:S00116?"^Rename this field "animation_scale_out" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¦™ıøÿÿÿÿ8êîëÒ+
+squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(×åó«øÿÿÿÿ
+€squid:S1157Ä"cReplace these toUpperCase()/toLowerCase() and equals() calls with a single equalsIgnoreCase() call.(¹ªøÿÿÿÿ
+Esquid:S1068-".Remove this unused "lblSearchh" private field.(²°ó²
+csquid:CommentedOutCodeLineÓ"<This block of commented-out lines of code should be removed.(şà€Ê
+j
+squid:S134¬"NRefactor this code to not nest more than 3 if/for/while/switch/try statements.(¡æĞÁÿÿÿÿÿ
+Lsquid:S1066¦"/Merge this if statement with the enclosing one.(ÆÿÒ­ıÿÿÿÿ
+™squid:S1186ì"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(á¬‡İ
+hsquid:CommentedOutCodeLineç"<This block of commented-out lines of code should be removed.(éØ»Úûÿÿÿÿ
+j
+squid:S134¥"NRefactor this code to not nest more than 3 if/for/while/switch/try statements.(ûëù«øÿÿÿÿ
+csquid:CommentedOutCodeLineØ"<This block of commented-out lines of code should be removed.(íâö·
+tsquid:S1188©"\Reduce this anonymous class number of lines from 22 to at most 20, or make it a named class.(†¥‡ÿ
+jsquid:MaximumInheritanceDepth*"<This class has 7 parents which is greater than 5 authorized.(Áã£ñúÿÿÿÿ
+hsquid:CommentedOutCodeLineá"<This block of commented-out lines of code should be removed.(°Ä®šùÿÿÿÿ
+Vsquid:S1155¢">Use isEmpty() to check whether the collection is empty or not.(ìŠœ
+hsquid:CommentedOutCodeLineİ"<This block of commented-out lines of code should be removed.(ªí»«ıÿÿÿÿ
+csquid:CommentedOutCodeLineß"<This block of commented-out lines of code should be removed.(íîô
+Fsquid:S1481Q"/Remove this unused "linGeneral" local variable.(Ê²á¹
+Ssquid:S1066°"/Merge this if statement with the enclosing one.(¤Ÿ¤‰ûÿÿÿÿ8ò¥Áò+
+Usquid:S1854Q">Remove this useless assignment to local variable "linGeneral".(Ê²á¹
+squid:S1188v"\Reduce this anonymous class number of lines from 21 to at most 20, or make it a named class.(ÖúË¯üÿÿÿÿ8ßèãÒ+
+jsquid:CommentedOutCodeLine’"<This block of commented-out lines of code should be removed.(Ÿïš†8Ç…†î+
+€squid:S1450:"bRemove the "linearLayoutManager" field and declare it as a local variable in the relevant methods.(„ñš8£Æ½ò+
+psquid:S1450-"YRemove the "lblSearchh" field and declare it as a local variable in the relevant methods.(²°ó²

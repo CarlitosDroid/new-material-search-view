@@ -64,15 +64,34 @@ public class UserFilter extends Filter {
 
     public void addItemToOfOriginalList(UserEntity userEntity){
         originalUserEntityList.add(0, userEntity);
-    }
-
-    public void addItemToOfOriginalList2(UserEntity userEntity){
-        originalUserEntityList.add(0, userEntity);
         filteredUserEntityList.add(0, userEntity);
 
         adapter.getFilteredList().clear();
         adapter.getFilteredList().addAll(filteredUserEntityList);
         adapter.notifyDataSetChanged();
     }
+
+
+    public void removeItemFromOriginalAndFilteredLisy(int position){
+
+        for (int i = 0; i < originalUserEntityList.size(); i++) {
+            if(originalUserEntityList.get(i).getName().equals(filteredUserEntityList.get(position).getName())){
+                originalUserEntityList.remove(i);
+            }
+        }
+
+        filteredUserEntityList.remove(position);
+
+        adapter.getFilteredList().clear();
+        adapter.getFilteredList().addAll(filteredUserEntityList);
+        adapter.notifyDataSetChanged();
+
+    }
+
+
+
+
+
+
 
 }
