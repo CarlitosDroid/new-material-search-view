@@ -204,12 +204,10 @@ public class SecondDemoActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void positioningItemClicked(String name, int position) {
-
         dialog.dismiss();
         String stringDateUpdated = Util.getFormatDate();
         lastSearchDB.updateLastSearchByName(name, stringDateUpdated);
-
-        ((SecondFilter) userAdapter.getFilter()).updateItemFromOriginalAndFilteredLisy(name, stringDateUpdated, position);
+        ((SecondFilter) userAdapter.getFilter()).updateItemFromOriginalAndFilteredList(name, stringDateUpdated, position);
     }
 
     public void showDeleteLabelDialogFragment(String name, int position) {
@@ -252,7 +250,9 @@ public class SecondDemoActivity extends AppCompatActivity implements View.OnClic
 
 
                     if(shouldAddLastSearch(searchWrd)){
-                        userEntityList.add(new UserEntity(searchWrd, Util.getFormatDate()));
+                        lastSearchDB.addLastSearch(searchWrd, Util.getFormatDate());
+                        userEntityList.clear();
+                        userEntityList.addAll(lastSearchDB.getOrderedListLastSearch());
                         ((UserFilter) userAdapter.getFilter()).addItemToOfOriginalList(new UserEntity(searchWrd, Util.getFormatDate()));
                     }
 

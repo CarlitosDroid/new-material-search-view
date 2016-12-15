@@ -91,7 +91,7 @@ public class SecondFilter extends Filter {
     }
 
 
-    public void updateItemFromOriginalAndFilteredLisy(String itemName, String stringDateUpdated, int position){
+    public void updateItemFromOriginalAndFilteredList(String itemName, String stringDateUpdated, int position){
 
         for (int i = 0; i < originalUserEntityList.size(); i++) {
             if(originalUserEntityList.get(i).getName().equals(itemName)){
@@ -114,7 +114,7 @@ public class SecondFilter extends Filter {
         adapter.notifyDataSetChanged();
 
     }
-//    public void updateItemFromOriginalAndFilteredLisy(String itemName, String stringDateUpdated, int position){
+//    public void updateItemFromOriginalAndFilteredList(String itemName, String stringDateUpdated, int position){
 //
 //        for (int i = 0; i < originalUserEntityList.size(); i++) {
 //            if(originalUserEntityList.get(i).getName().equals(filteredUserEntityList.get(position).getName())){

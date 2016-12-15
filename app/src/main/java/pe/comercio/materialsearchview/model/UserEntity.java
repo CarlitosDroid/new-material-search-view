@@ -1,7 +1,5 @@
 package pe.comercio.materialsearchview.model;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 /**
  * Created by Carlos Vargas on 11/25/16.
